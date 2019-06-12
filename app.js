@@ -13,8 +13,21 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.set('views', './src/views');
 app.set('view engine', 'ejs');
 
+const navbar = [
+	{ link: '/books/', title: 'Books' },
+	{ link: '/authors/', title: 'Authors' },
+];
+const bookRouter = require('./src/routes/bookRoutes')(navbar);
+
+app.use('/books', bookRouter);
 app.get('/', (req, res) => {
-	res.render('index', { list: ['a', 'b'], title: 'Library' });
+	res.render('index', {
+		navbar: [
+			{ link: '/books/', title: 'Books' },
+			{ link: '/authors/', title: 'Authors' },
+		],
+		title: 'Library',
+	});
 });
 
 app.listen(PORT, () => {
